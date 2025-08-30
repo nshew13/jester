@@ -1,26 +1,23 @@
 <script setup lang="ts">
 import type {IJoke} from '@/types/Joke.ts';
+import JokeSingle from '@/components/JokeSingle.vue';
 
 defineProps<{
-	joke: IJoke
+	jokes: IJoke[]
 }>();
 </script>
 
 <template>
-<div class="joke">
-  <div class="setup">{{ joke.setup }}</div>
-  <div class="punchline">{{ joke.punchline }}</div>
-</div>
+<section class="jokes">
+  <JokeSingle v-for="joke in jokes" :joke="joke" />
+</section>
 </template>
 
 <style scoped>
-.joke {
+.jokes {
     border-radius: 10px;
-    background: lightblue;
+    background: lightgoldenrodyellow;
     padding: 1em;
     margin: 1em;
-}
-.setup {
-    font-weight: bold;
 }
 </style>
