@@ -1,0 +1,13 @@
+:root {
+    --jester-color-blue: #2c5aa0;
+    --jester-color-gold: #d4aa00;
+    --jester-color-green: #008033;
+    --jester-color-red: #d40000;
+
+    --jester-bg-lighten: calc(l + 0.35) c h;
+
+    --jester-color-bg-blue: oklch(from var(--jester-color-blue) var(--jester-bg-lighten));
+    --jester-color-bg-gold: oklch(from var(--jester-color-gold) var(--jester-bg-lighten));
+    --jester-color-bg-green: oklch(from var(--jester-color-green) var(--jester-bg-lighten));
+    --jester-color-bg-red: oklch(from var(--jester-color-red) var(--jester-bg-lighten));
+}
