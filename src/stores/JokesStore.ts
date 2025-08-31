@@ -5,20 +5,68 @@ import type {IJoke} from '@/types/Joke.ts';
 export const useJokesStore = defineStore('jokes', () => {
 	const jokes = ref<IJoke[]>([]);
 	const jokesLoaded = ref<boolean>(false);
+	const pageLastOffset = ref<number>(0);
+	const pageSize = ref<number>(10);
 
 	const jokesCount = computed<number>(() => jokes.value.length);
 
 	const jokeTypes = computed<Set<IJoke['type']>>(() => {
-		const types = new Set();
+		const types: Set<IJoke['type']> = new Set();
 
-		jokes.value.forEach(j => {
+		jokes.value.forEach((j, index) => {
 			types.add(j.type);
+			// while we're looping, go ahead and set/store ID
+			j.id = index;
 		});
 
 		return types;
 	});
 
 	const jokeTypesCount = computed<number>(() => jokeTypes.value.size);
+
+	const pageCurrent = computed<number>(() => {
+		return pageLastOffset.value / pageSize.value;
+	});
+
+	const pageTotal = computed<number>(() => {
+		return Math.ceil(jokes.value.length / pageSize.value);
+	});
+
+	/**
+	 * @private
+	 * @param offset
+	 */
+	const getPage = (offset = 0): IJoke[] => {
+		pageLastOffset.value = offset + pageSize.value;
+		return jokes.value.slice(offset, pageLastOffset.value);
+	};
+
+	const getNextPage = () => {
+		if (pageLastOffset.value < jokes.value.length - 1) {
+			return getPage(pageLastOffset.value);
+		}
+		return [];
+	};
+
+	const getPrevPage = () => {
+		// initial values are safe: 0 !>= 10
+		if (pageLastOffset.value >= pageSize.value) {
+			/*
+			 * getPage always moves "forward" by (offset + pageSize). Since
+			 * pageLastOffset always points to the end of the current/beginning
+			 * of the next page, when going in reverse, we need to start the slice
+			 * back two page lengths to get the previous page. In other words,
+			 * subtracting only one page will give us the current slice again.
+			 */
+			const prevPageOffset = pageLastOffset.value - pageSize.value * 2;
+			return  getPage(prevPageOffset);
+		}
+		return [];
+	};
+
+	// const setPageSize = (size: number) => {
+	// 	pageSize.value = size;
+	// };
 
 	const init = async () => {
 		try {
@@ -35,25 +83,21 @@ export const useJokesStore = defineStore('jokes', () => {
 		}
 	};
 
-	// const fetchRandomJoke = async (): PromiseLike<IJoke> => {
-	// 	try {
-	// 		const response = await fetch('https://official-joke-api.appspot.com/jokes/random');
-	// 		if (!response.ok) {
-	// 			throw new Error(`Response status: ${response.status}`);
-	// 		}
-	//
-	// 		return await response.json();
-	// 	} catch (error) {
-	// 		console.error((error as Error)?.message ?? 'Unknown error');
-	// 	}
-	// };
-
 	return {
-		init,
+		// state
+		jokes,
+		jokesLoaded,
+		pageLastOffset,
+		pageSize,
+		// getters
 		jokeTypes,
 		jokeTypesCount,
-		jokes,
 		jokesCount,
-		jokesLoaded,
+		pageCurrent,
+		pageTotal,
+		// actions
+		getNextPage,
+		getPrevPage,
+		init,
 	};
 });
