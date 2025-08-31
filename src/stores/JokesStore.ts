@@ -8,9 +8,7 @@ export const useJokesStore = defineStore('jokes', () => {
 	const pageLastOffset = ref<number>(0);
 	const pageSize = ref<number>(10);
 
-	const jokesCount = computed<number>(() => jokes.value.length);
-
-	const jokeTypes = computed<Set<IJoke['type']>>(() => {
+	const jokeTypes = computed<Array<IJoke['type']>>(() => {
 		const types: Set<IJoke['type']> = new Set();
 
 		jokes.value.forEach((j, index) => {
@@ -19,10 +17,12 @@ export const useJokesStore = defineStore('jokes', () => {
 			j.id = index;
 		});
 
-		return types;
+		return Array.from(types);
 	});
 
-	const jokeTypesCount = computed<number>(() => jokeTypes.value.size);
+	const jokesCount = computed<number>(() => jokes.value.length);
+
+	const jokeTypesCount = computed<number>(() => jokeTypes.value.length);
 
 	const pageCurrent = computed<number>(() => {
 		return pageLastOffset.value / pageSize.value;
@@ -89,12 +89,14 @@ export const useJokesStore = defineStore('jokes', () => {
 		jokesLoaded,
 		pageLastOffset,
 		pageSize,
+
 		// getters
 		jokeTypes,
 		jokeTypesCount,
 		jokesCount,
 		pageCurrent,
 		pageTotal,
+
 		// actions
 		getNextPage,
 		getPrevPage,

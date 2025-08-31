@@ -1,20 +1,11 @@
 <script setup lang="ts">
-import type {IJoke} from '@/types/Joke.ts';
 import JokeSingle from '@/components/JokeSingle.vue';
+import type {IJoke} from '@/types/Joke.ts';
 import type {QTableProps} from 'quasar';
-import {computed} from 'vue';
-import {useJokesStore} from '@/stores/JokesStore.ts';
 
 defineProps<{
 	jokes: IJoke[]
 }>();
-
-const jokesStore = useJokesStore();
-const jokeTypesCount = computed<number>(() => jokesStore.jokeTypesCount);
-
-const paginationLabel = (firstRowIndex: number, endRowIndex: number, totalRowsNumber: number) => {
-	return `Showing jokes ${firstRowIndex}-${endRowIndex} of ${totalRowsNumber} in ${jokeTypesCount.value} Categories`;
-};
 
 const columnsDef: QTableProps['columns'] = [
 	{
@@ -47,7 +38,6 @@ const columnsDef: QTableProps['columns'] = [
   class="joke-list"
   :columns="columnsDef"
   grid
-  :pagination-label="paginationLabel"
   row-key="id"
   :rows-per-page-options="[10, 20, 50, 100]"
   :rows="jokes"

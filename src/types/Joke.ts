@@ -4,3 +4,5 @@ export interface IJoke {
 	setup: string;
 	type: string;
 }
+
+export type TJokeCategoryToggles = Record<IJoke['type'], boolean>;
