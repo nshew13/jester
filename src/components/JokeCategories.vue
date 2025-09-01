@@ -4,16 +4,23 @@ import {useJokesStore} from '@/stores/JokesStore.ts';
 import type {IJoke, TJokeCategoryToggles} from '@/types/Joke.ts';
 
 const emit = defineEmits<{
-	'category-toggle': [state: TJokeCategoryToggles],
+	'toggle-category': [state: TJokeCategoryToggles],
+	'toggle-liked': [state: boolean],
 }>();
 
 const jokesStore = useJokesStore();
 
 const categoryToggles = ref<TJokeCategoryToggles>({});
+const likedOnlyToggle = ref<boolean>(false);
 
 const toggleCategory = (cat: IJoke['type']) => {
 	categoryToggles.value[cat] = !categoryToggles.value?.[cat];
-	emit('category-toggle', categoryToggles.value);
+	emit('toggle-category', categoryToggles.value);
+};
+
+const toggleLikedOnly = () => {
+	likedOnlyToggle.value = !likedOnlyToggle.value;
+	emit('toggle-liked', likedOnlyToggle.value);
 };
 
 const init = () => {
@@ -22,7 +29,8 @@ const init = () => {
   });
 
 	// allow parent to (un)filter on first load
-	emit('category-toggle', categoryToggles.value);
+	emit('toggle-category', categoryToggles.value);
+	emit('toggle-liked', likedOnlyToggle.value);
 };
 
 init();
@@ -39,6 +47,14 @@ init();
     :model-value="categoryToggles[cat]"
     :name="cat"
     @update:model-value="() => toggleCategory(cat)"
+  />
+
+  <q-toggle
+    color="green"
+    label="LIKED ONLY"
+    :model-value="likedOnlyToggle"
+    name="likedOnlyToggle"
+    @update:model-value="toggleLikedOnly"
   />
 </div>
 </template>
