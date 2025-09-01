@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {useJokesStore} from '@/stores/JokesStore.ts';
 import {computed, ref} from 'vue';
+import ConfigMenu from '@/components/ConfigMenu.vue';
 import JokeList from '@/components/JokeList.vue';
 import JokeCategories from '@/components/JokeCategories.vue';
 import type {IJoke, TJokeCategoryToggles} from '@/types/Joke.ts';
@@ -30,6 +31,8 @@ init();
 
 <template>
 <div class="page-container">
+  <ConfigMenu />
+
   <header :class="{loading: isLoading}">
     <div class="brand">
       <img alt="Jester logo" class="logo" src="/jester-logo-sq.png" />

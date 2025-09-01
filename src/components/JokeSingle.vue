@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import {computed} from 'vue';
+import {computed, ref} from 'vue';
+import {usePreferencesStore} from '@/stores/PreferencesStore.ts';
 import type {IJoke} from '@/types/Joke.ts';
 
 const props = defineProps<{
 	joke: IJoke
 }>();
+
+const preferencesStore = usePreferencesStore();
 
 const backgroundColorOptions = [
 	'blue',
@@ -13,15 +16,28 @@ const backgroundColorOptions = [
 	'red',
 ];
 
-// picks a color based on ID, meaning they should appear in a repeating sequence
+const jokeClicked = ref<boolean>(false);
+
+// picks a color based on ID
 const jokeColorIndex = computed<number>(() => (props.joke?.id ?? 1) % 4);
+
+const jokeEnableCursor = computed<string>(() => preferencesStore.preferences.clickToRevealPunchline && !jokeClicked.value ? 'cursor-pointer' : '');
+
+const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.clickToRevealPunchline || jokeClicked.value);
 </script>
 
 <template>
-<q-card bordered flat class="joke" :class="backgroundColorOptions[jokeColorIndex]">
+<q-card
+  bordered
+  class="joke"
+  :class="[backgroundColorOptions[jokeColorIndex], jokeEnableCursor]"
+  flat
+  @click.stop="jokeClicked = true"
+>
   <q-card-section class="joke-content">
     <div class="setup">{{ joke.setup }}</div>
-    <div class="punchline">{{ joke.punchline }}</div>
+<!-- TODO: animate appearance -->
+    <div class="punchline" v-if="jokeShowPunchline">{{ joke.punchline }}</div>
   </q-card-section>
 
   <q-separator />
