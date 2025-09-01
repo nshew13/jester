@@ -30,11 +30,14 @@ init();
 
 <template>
 <div class="joke-categories-container">
+  Display jokes from the following categories:
+</div>
+<div class="joke-categories-container">
   <q-toggle
     v-for="(toggle, cat) in categoryToggles"
-    :name="cat"
     :label="cat.toLocaleUpperCase()"
     :model-value="categoryToggles[cat]"
+    :name="cat"
     @update:model-value="() => toggleCategory(cat)"
   />
 </div>

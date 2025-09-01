@@ -55,4 +55,8 @@ const columnsDef: QTableProps['columns'] = [
     bottom: 0;
     background-color: rgba(255 255 255 / 0.8);
 }
+:deep(.q-table__grid-content) {
+    /* by default, these will stretch */
+    align-items: flex-start;
+}
 </style>

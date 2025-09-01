@@ -31,7 +31,10 @@ init();
 <template>
 <div class="page-container">
   <header :class="{loading: isLoading}">
-    <img alt="Jester logo" class="logo" src="/jester-logo-sq.png" />
+    <div class="brand">
+      <img alt="Jester logo" class="logo" src="/jester-logo-sq.png" />
+      <span class="font-diner-swanky-regular">Jester</span>
+    </div>
     <template v-if="isLoading">
       Loading...
     </template>
@@ -50,7 +53,6 @@ init();
 .page-container {
     display: flex;
     flex-direction: column;
-    /* TODO: Don't stretch single (or few) row to full height */
     height: 100vh;
 }
 
@@ -64,15 +66,23 @@ header {
         justify-content: center;
 
         .logo {
+            display: block;
             animation: rotate360 1s linear infinite;
         }
     }
 }
 
-/* TODO: mask/clip when not :not(.loading) */
+.brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 28pt;
+}
+
 .logo {
     display: block;
-    margin: 0 auto 2rem;
+    margin: 0 1rem 0 0;
     width: 200px;
     height: auto;
 }
