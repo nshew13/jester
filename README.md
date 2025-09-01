@@ -1,18 +1,6 @@
 # jester
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
+Coding exercise in Vue 3, Quasar and Vite.
 
 ## Project Setup
 
@@ -45,3 +33,21 @@ pnpm lint
 ```
 
 https://openclipart.org/detail/214483/colored-jester-hat-by-dear_theophilus-214483
+
+
+## Requirement caveats
+
+### Fetch and render the API data.
+There's really not much "fetching" to do. The [Official Joke API](https://github.com/15Dkatz/official_joke_api/)
+provides *some* endpoints, but none that would allow the requirement to sort and filter. Joke "types" are not
+queryable using the API. Instead, it makes more sense to pull the full dataset and built a Set of types for
+use with this app.
+
+(It would be more efficient to just include the JSON file in the project, but then there's no example of a fetch call.)
+
+### Provide sorting controls.
+There's not much to sort by. `id` is conjecture and removed from the user space. We could sort the jokes
+alphabetically by `setup`, but that seems pointless, and `punchline` even more so. The only remaining field
+from the dataset is `type`, which is what has been implemented.
+
+Instead of sorting, filter toggles have been added.

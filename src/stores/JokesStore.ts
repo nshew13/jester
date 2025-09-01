@@ -12,7 +12,10 @@ export const useJokesStore = defineStore('jokes', () => {
 		const types: Set<IJoke['type']> = new Set();
 
 		jokes.value.forEach((j, index) => {
-			types.add(j.type);
+			// lowercase here to make sorting later more efficient
+			const typeLC = j.type.toLocaleLowerCase();
+			types.add(typeLC);
+			j.type = typeLC;
 			// while we're looping, go ahead and set/store ID
 			j.id = index;
 		});
@@ -76,7 +79,37 @@ export const useJokesStore = defineStore('jokes', () => {
 				throw new Error(`Response status: ${response.status}`);
 			}
 
-			jokes.value = await response.json();
+			const data = await response.json();
+
+			/*
+			 * sort jokes by type
+			 *
+			 * Since we're doing this at initialization, we get the side effect
+			 * that `jokeTypes` will be in the same order.
+			 */
+			jokes.value = data.toSorted((a: IJoke, b: IJoke) => {
+				// we've already LC'd the type
+
+				// let's treat "general" as the earliest type
+				if (a.type === 'general' && b.type !== 'general') {
+					return -1;
+				}
+				if (a.type !== 'general' && b.type === 'general') {
+					return 1;
+				}
+
+				// otherwise, sort normally
+				if (a.type < b.type) {
+					return -1;
+				}
+				if (a.type > b.type) {
+					return 1;
+				}
+
+				// this should maintain original array order
+				return 0;
+			});
+
 			jokesLoaded.value = true;
 		} catch (error) {
 			console.error((error as Error)?.message ?? 'Unknown error');
