@@ -11,9 +11,10 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 		useStorage(
 			STORE_NAME,
 			{
-				clickToRevealPunchline: false,
 				dislikedJokeIDs: new Set<IJoke['id']>(),
 				likedJokeIDs: new Set<IJoke['id']>(),
+				optClickToRevealPunchline: false,
+				optHideDisliked: false,
 			},
 			localStorage,
 			{
@@ -25,7 +26,6 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 
 						let dislikedJokeIDs: Set<IJoke['id']>;
 						if (typeof obj.dislikedJokeIDs[Symbol.iterator] === 'function') {
-							console.log('dislikedJokeIDs:', obj.dislikedJokeIDs);
 							dislikedJokeIDs = new Set<IJoke['id']>(obj.dislikedJokeIDs);
 						} else {
 							dislikedJokeIDs = new Set<IJoke['id']>();
@@ -71,7 +71,11 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 	const jokeIsLiked = (jokeID: IJoke['id']) => preferences.value.likedJokeIDs?.has(jokeID);
 
 	const toggleClickToRevealPunchline = () => {
-		preferences.value.clickToRevealPunchline = !preferences.value.clickToRevealPunchline;
+		preferences.value.optClickToRevealPunchline = !preferences.value.optClickToRevealPunchline;
+	};
+
+	const toggleHideDisliked = () => {
+		preferences.value.optHideDisliked = !preferences.value.optHideDisliked;
 	};
 
 	return {
@@ -86,5 +90,6 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 		jokeIsDisliked,
 		jokeIsLiked,
 		toggleClickToRevealPunchline,
+		toggleHideDisliked,
 	};
 });

@@ -1,18 +1,28 @@
 <script setup lang="ts">
-import {useJokesStore} from '@/stores/JokesStore.ts';
 import {computed, ref} from 'vue';
+import {useJokesStore} from '@/stores/JokesStore.ts';
+import {usePreferencesStore} from '@/stores/PreferencesStore.ts';
 import ConfigMenu from '@/components/ConfigMenu.vue';
 import JokeList from '@/components/JokeList.vue';
 import JokeCategories from '@/components/JokeCategories.vue';
 import type {IJoke, TJokeCategoryToggles} from '@/types/Joke.ts';
 
 const jokesStore = useJokesStore();
+const preferencesStore = usePreferencesStore();
 
 const filterCategories = ref<Array<IJoke['type']>>([]);
 
-const filteredList = computed<IJoke[]>(() =>
-	jokesStore.jokes.filter(j => filterCategories.value.includes(j.type))
-);
+const filteredList = computed<IJoke[]>(() => {
+	// shortcut
+	const hideDisliked = preferencesStore.preferences.optHideDisliked;
+
+	return jokesStore.jokes.filter(j => {
+		const filterCategory = filterCategories.value.includes(j.type);
+		const filterHideDisliked = hideDisliked && preferencesStore.preferences.dislikedJokeIDs.has(j.id);
+
+		return filterCategory && !filterHideDisliked;
+	});
+});
 
 // TODO: debounce or add delay to allow minimum spin time
 const isLoading = computed<boolean>(() => !jokesStore.jokesLoaded);

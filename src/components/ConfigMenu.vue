@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {usePreferencesStore} from '@/stores/PreferencesStore.ts';
+import ConfigMenuItem from '@/components/ConfigMenuItem.vue';
 
 const preferencesStore = usePreferencesStore();
 </script>
@@ -12,21 +13,19 @@ const preferencesStore = usePreferencesStore();
 >
   <q-menu auto-close>
     <q-list style="min-width: 100px">
-      <q-item
-        clickable
+
+      <ConfigMenuItem
+        :checked-when="preferencesStore.preferences.optClickToRevealPunchline"
+        item-text="Click to reveal punchline"
         @click="preferencesStore.toggleClickToRevealPunchline"
-      >
-        <q-item-section>
-          <div>
-            <!-- We don't want to use v-if because Quasar won't reserve the space for the checkmark -->
-            <q-icon
-              :class="{'invisible': !preferencesStore.preferences.clickToRevealPunchline}"
-              name="sym_r_done"
-            />
-            Click to reveal punchline
-          </div>
-        </q-item-section>
-      </q-item>
+      />
+
+      <ConfigMenuItem
+        :checked-when="preferencesStore.preferences.optHideDisliked"
+        item-text="Hide disliked jokes"
+        @click="preferencesStore.toggleHideDisliked"
+      />
+
     </q-list>
   </q-menu>
 </q-btn>
@@ -37,9 +36,5 @@ const preferencesStore = usePreferencesStore();
     position: fixed;
     top: 10px;
     right: 10px;
-}
-
-:deep(.q-item__section) {
-    white-space: nowrap;
 }
 </style>

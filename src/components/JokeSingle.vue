@@ -23,7 +23,7 @@ const jokeClicked = ref<boolean>(false);
 // picks a color based on ID
 const jokeColorIndex = computed<number>(() => (props.joke?.id ?? 1) % 4);
 
-const jokeEnableCursor = computed<string>(() => preferencesStore.preferences.clickToRevealPunchline && !jokeClicked.value ? 'cursor-pointer' : '');
+const jokeEnableCursor = computed<string>(() => preferencesStore.preferences.optClickToRevealPunchline && !jokeClicked.value ? 'cursor-pointer' : '');
 
 const jokeIsDisliked = computed<boolean>(() => (
     preferencesStore.preferences.dislikedJokeIDs && preferencesStore.jokeIsDisliked(props.joke.id))
@@ -33,7 +33,7 @@ const jokeIsLiked = computed<boolean>(() => (
     preferencesStore.preferences.likedJokeIDs && preferencesStore.jokeIsLiked(props.joke.id))
 );
 
-const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.clickToRevealPunchline || jokeClicked.value);
+const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.optClickToRevealPunchline || jokeClicked.value);
 </script>
 
 <template>
