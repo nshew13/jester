@@ -50,11 +50,16 @@ const columnsDef: QTableProps['columns'] = [
 </template>
 
 <style scoped>
+.joke-list {
+    overflow: auto;
+}
+
 :deep(.q-table__bottom) {
     position: sticky;
     bottom: 0;
     background-color: rgba(255 255 255 / 0.8);
 }
+
 :deep(.q-table__grid-content) {
     /* by default, these will stretch */
     align-items: flex-start;

@@ -94,9 +94,4 @@ header {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-
-.joke-list {
-    overflow: auto;
-    flex: 1 0 0;
-}
 </style>

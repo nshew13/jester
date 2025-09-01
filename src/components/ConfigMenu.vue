@@ -7,7 +7,7 @@ const preferencesStore = usePreferencesStore();
 <template>
 <q-btn
   class="config-menu-control"
-  icon="settings"
+  icon="sym_r_settings"
   flat
 >
   <q-menu auto-close>
@@ -21,7 +21,7 @@ const preferencesStore = usePreferencesStore();
             <!-- We don't want to use v-if because Quasar won't reserve the space for the checkmark -->
             <q-icon
               :class="{'invisible': !preferencesStore.preferences.clickToRevealPunchline}"
-              name="done"
+              name="sym_r_done"
             />
             Click to reveal punchline
           </div>

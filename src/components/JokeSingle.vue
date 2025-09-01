@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import {usePreferencesStore} from '@/stores/PreferencesStore.ts';
+import ButtonActionDislike from '@/components/ButtonActionDislike.vue';
+import ButtonActionLike from '@/components/ButtonActionLike.vue';
 import type {IJoke} from '@/types/Joke.ts';
 
 const props = defineProps<{
@@ -23,6 +25,14 @@ const jokeColorIndex = computed<number>(() => (props.joke?.id ?? 1) % 4);
 
 const jokeEnableCursor = computed<string>(() => preferencesStore.preferences.clickToRevealPunchline && !jokeClicked.value ? 'cursor-pointer' : '');
 
+const jokeIsDisliked = computed<boolean>(() => (
+    preferencesStore.preferences.dislikedJokeIDs && preferencesStore.jokeIsDisliked(props.joke.id))
+);
+
+const jokeIsLiked = computed<boolean>(() => (
+    preferencesStore.preferences.likedJokeIDs && preferencesStore.jokeIsLiked(props.joke.id))
+);
+
 const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.clickToRevealPunchline || jokeClicked.value);
 </script>
 
@@ -41,7 +51,19 @@ const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.
   </q-card-section>
 
   <q-separator />
-  <div class="joke-type">{{ joke.type }}</div>
+
+  <q-card-actions>
+    <div class="joke-type">{{ joke.type }}</div>
+    <q-space />
+    <ButtonActionLike
+      :toggle-state="jokeIsLiked"
+      @click.stop="preferencesStore.addLikedJoke(joke.id)"
+    />
+    <ButtonActionDislike
+      :toggle-state="jokeIsDisliked"
+      @click.stop="preferencesStore.addDislikedJoke(joke.id)"
+    />
+  </q-card-actions>
 </q-card>
 </template>
 
@@ -51,7 +73,7 @@ const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.
     flex-direction: column;
 
     border-radius: 10px;
-    padding: 1em;
+    padding: 0.5em;
     margin: 1em;
 
     &.blue { background: var(--jester-color-bg-blue); }
@@ -69,7 +91,6 @@ const jokeShowPunchline = computed<boolean>(() => !preferencesStore.preferences.
 }
 
 .joke-type {
-    text-align: right;
     font-style: italic;
     font-size: smaller;
 }
