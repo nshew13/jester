@@ -38,9 +38,8 @@ const updateFilter = (toggleArray: TJokeCategoryToggles) => {
 	filterCategories.value = Object.keys(toggleArray).filter(cat => toggleArray[cat]);
 };
 
-const init = async () => {
-	await jokesStore.init();
-	jokesStore.getNextPage();
+const init = () => {
+	jokesStore.init().then();
 };
 
 init();

@@ -82,7 +82,7 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 		// state
 		preferences,
 
-		// getters
+		// computed
 
 		// actions
 		addDislikedJoke,

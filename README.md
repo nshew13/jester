@@ -51,3 +51,11 @@ alphabetically by `setup`, but that seems pointless, and `punchline` even more s
 from the dataset is `type`, which is what has been implemented.
 
 Instead of sorting, filter toggles have been added.
+
+### Implement pagination
+The API does not provide a way to fetch a page of jokes at a time. The options are limited to individual jokes
+by ID, an arbitrary number of randomly chosen jokes or an arbitrary number of jokes by type. The only API call
+that could be paged is the ID option, which seems inefficient. The current implementation uses QTable's built-in
+pagination over the whole dataset.
+
+Paging was implemented before adding Quasar, and is still present, just commented-out.
