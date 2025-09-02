@@ -15,6 +15,7 @@ defineProps<{
     class="button-action-base-icon"
     :class="{'enabled': toggleState}"
     :name="`sym_r_${iconName}`"
+    :title="iconName"
   />
 </q-btn>
 </template>
@@ -22,10 +23,6 @@ defineProps<{
 <style scoped>
 .button-action-base-icon {
     opacity: 0.2;
-
-    &:hover {
-
-    }
 
     &.enabled {
         opacity: 1;
