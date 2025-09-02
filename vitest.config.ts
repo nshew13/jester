@@ -11,7 +11,6 @@ export default mergeConfig(
 			globals: true, // for Testing Library https://testing-library.com/docs/vue-testing-library/setup
 			root: fileURLToPath(new URL('./', import.meta.url)),
 			coverage: {
-				enabled: true,
 				provider: 'istanbul', // 'v8' is the default
 				thresholds: {
 					autoUpdate: true,

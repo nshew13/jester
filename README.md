@@ -35,6 +35,17 @@ pnpm lint
 https://openclipart.org/detail/214483/colored-jester-hat-by-dear_theophilus-214483
 
 
+## Implementation highlights
+
+ - Native `fetch` calls
+ - Quasar component library (Vite plugin)
+ - Pinia stores 
+   - Automatic writing to `localStorage` via `vueuse`
+ - Simple unit testing
+   - Coverage report is available with `--coverage`
+ - Git `pre-push` hook (via Husky)
+   - Prevents pushing with failing test(s) or packages failing security audit
+
 ## Implementation notes
 
 ### Fetch and render the API data
