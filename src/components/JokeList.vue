@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import {computed, ref} from 'vue';
 import JokeSingle from '@/components/JokeSingle.vue';
 import type {IJoke} from '@/types/Joke.ts';
 import type {QTableProps} from 'quasar';
 
-defineProps<{
+const props = defineProps<{
 	jokes: IJoke[]
 }>();
 
@@ -20,7 +21,6 @@ const columnsDef: QTableProps['columns'] = [
 		label: 'Setup',
 		field: 'setup',
 		align: 'left',
-		// classes: 'setup',
 		style: 'font-weight: bold;',
 	},
 	{
@@ -30,6 +30,17 @@ const columnsDef: QTableProps['columns'] = [
 		align: 'left',
 	},
 ];
+
+const searchString = ref<string>('');
+
+const searchResults = computed<IJoke[]>(() => {
+	const searchStringLC = searchString.value.toLocaleLowerCase();
+
+	// TODO: to improve performance, we could store a LC'd `searchString` value on IJoke,
+	//       which could include punchline (etc.)
+	return props.jokes.filter(j => j.setup.toLocaleLowerCase().includes(searchStringLC));
+});
+
 </script>
 
 <template>
@@ -40,9 +51,26 @@ const columnsDef: QTableProps['columns'] = [
   grid
   row-key="id"
   :rows-per-page-options="[10, 20, 50, 100]"
-  :rows="jokes"
+  :rows="searchResults"
   wrap-cells
 >
+  <!-- search field -->
+  <template v-slot:top-right>
+    <q-input
+      outlined
+      rounded
+      dense
+      debounce="300"
+      v-model="searchString"
+      placeholder="Search"
+      name="search"
+    >
+      <template v-slot:append>
+        <q-icon name="sym_r_search" />
+      </template>
+    </q-input>
+  </template>
+
   <template v-slot:item="props">
     <JokeSingle :joke="props.row" />
   </template>
