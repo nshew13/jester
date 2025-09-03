@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {ref, watch} from 'vue';
 import JokeSingle from '@/components/JokeSingle.vue';
+import SortControl from '@/components/SortControl.vue';
+import {SORT_DIRECTION, type TSortDirection} from '@/types/Sort.ts';
 import type {IJoke} from '@/types/Joke.ts';
 import type {QTableProps} from 'quasar';
 
@@ -31,16 +33,46 @@ const columnsDef: QTableProps['columns'] = [
 	},
 ];
 
+/*
+ * Initializing this to the prop should be fine. We can
+ * assume the search input is empty and that the default
+ * sort of NONE won't have made a difference.
+ */
+const jokesToDisplay = ref<IJoke[]>(props.jokes);
 const searchString = ref<string>('');
+const sortDirectionSetup = ref<TSortDirection>(SORT_DIRECTION.NONE);
 
-const searchResults = computed<IJoke[]>(() => {
-	const searchStringLC = searchString.value.toLocaleLowerCase();
 
-	// TODO: to improve performance, we could store a LC'd `searchString` value on IJoke,
-	//       which could include punchline (etc.)
-	return props.jokes.filter(j => j.setup.toLocaleLowerCase().includes(searchStringLC));
-});
+const searchByString = (jokesToSort: IJoke[]): IJoke[] => {
+  const searchStringLC = searchString.value.toLocaleLowerCase();
+  return jokesToSort.filter(j => j?.searchString.includes(searchStringLC) ?? false);
+};
 
+const sortByJokeSetup = (jokesToSort: IJoke[]): IJoke[] => {
+	const sortLT = sortDirectionSetup.value === SORT_DIRECTION.ASC ? -1 : 1;
+	const sortGT = sortDirectionSetup.value === SORT_DIRECTION.ASC ? 1 : -1;
+
+	if (sortDirectionSetup.value === SORT_DIRECTION.NONE) {
+	  return jokesToSort;
+	}
+
+	return jokesToSort.toSorted((a: IJoke, b: IJoke) => {
+		if (a?.searchString < b?.searchString) {
+			return sortLT;
+		}
+		if (a?.searchString > b?.searchString) {
+			return sortGT;
+		}
+
+		return 0;
+	});
+};
+
+
+watch([() => props.jokes, searchString, sortDirectionSetup], () => {
+	const searchResults = searchByString(props.jokes);
+	jokesToDisplay.value = sortByJokeSetup(searchResults);
+}, {immediate: true});
 </script>
 
 <template>
@@ -51,9 +83,15 @@ const searchResults = computed<IJoke[]>(() => {
   grid
   row-key="id"
   :rows-per-page-options="[10, 20, 50, 100]"
-  :rows="searchResults"
+  :rows="jokesToDisplay"
   wrap-cells
 >
+  <!-- sort controls -->
+  <template v-slot:top-left>
+    Sort by:
+    <SortControl label="Setup" @sort="(sortDirection: TSortDirection) => sortDirectionSetup = sortDirection" />
+  </template>
+
   <!-- search field -->
   <template v-slot:top-right>
     <q-input
@@ -71,6 +109,15 @@ const searchResults = computed<IJoke[]>(() => {
     </q-input>
   </template>
 
+  <!-- no data -->
+  <template v-slot:no-data>
+    <div class="no-data">
+      No jokes found. Try adjusting your filters or search.
+      <img class="no-data-image" alt="bomb" src="/bomb-960_720.png" />
+    </div>
+  </template>
+
+  <!-- data -->
   <template v-slot:item="props">
     <JokeSingle :joke="props.row" />
   </template>
@@ -80,6 +127,20 @@ const searchResults = computed<IJoke[]>(() => {
 <style scoped>
 .joke-list {
     overflow: auto;
+}
+
+.no-data {
+    flex: 1 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.no-data-image {
+    width: 200px;
+    height: auto;
 }
 
 :deep(.q-table__bottom) {

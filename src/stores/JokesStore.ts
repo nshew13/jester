@@ -3,6 +3,7 @@ import {computed, ref} from 'vue';
 import type {IJoke} from '@/types/Joke.ts';
 
 const TYPE_GENERAL = 'general';
+const RE_NOT_ALPHANUM_SPACE = /[^A-Za-z0-9 \-]+/g;
 
 export const useJokesStore = defineStore('jokes', () => {
 	const jokeTypes = ref<Array<IJoke['type']>>([]);
@@ -65,10 +66,15 @@ export const useJokesStore = defineStore('jokes', () => {
 			throw new Error(`fetchJokes status: ${response.status}`);
 		}
 
-		const dataJokes = await response.json();
+		const dataJokes: IJoke[] = await response.json();
 
-		// add the ID to the model
-		dataJokes.map((joke: IJoke, index: number) => joke.id = index);
+		// add the ID to the model and create `searchString`
+		dataJokes.map((joke: IJoke, index: number) => {
+			joke.id = index;
+
+			const setupPlain = joke.setup.replace(RE_NOT_ALPHANUM_SPACE, '');
+			joke.searchString = setupPlain.toLocaleLowerCase();
+		});
 
 		/*
 		 * sort jokes by type

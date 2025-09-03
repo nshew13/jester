@@ -39,8 +39,16 @@ https://openclipart.org/detail/214483/colored-jester-hat-by-dear_theophilus-2144
 
  - Native `fetch` calls
  - Quasar component library (Vite plugin)
+ - Table data
+   - Search and sort by setup
+     - `searchString` added to model to reduce repeated `toLocaleLowerCase` calls 
+   - Filter by type, liked
  - Pinia stores 
-   - Automatic writing to `localStorage` via `vueuse`
+   - Automatically written to `localStorage` via `vueuse`
+ - User preferences
+   - Show punchline
+   - Like/dislike individual jokes
+   - Hide disliked
  - Simple unit testing
    - Coverage report is available with `--coverage`
  - Git `pre-push` hook (via Husky)

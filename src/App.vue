@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {computed, ref, watch} from 'vue';
+import {debounce} from 'quasar';
 import {useJokesStore} from '@/stores/JokesStore.ts';
 import {usePreferencesStore} from '@/stores/PreferencesStore.ts';
 import ConfigMenu from '@/components/ConfigMenu.vue';
@@ -12,6 +13,7 @@ const preferencesStore = usePreferencesStore();
 
 const filterCategories = ref<Array<IJoke['type']>>([]);
 const filterLiked = ref<boolean>(false);
+const isLoading = ref<boolean>(true);
 
 const filteredList = computed<IJoke[]>(() => {
 	// shortcut
@@ -31,12 +33,15 @@ const filteredList = computed<IJoke[]>(() => {
 	});
 });
 
-// TODO: debounce or add delay to allow minimum spin time
-const isLoading = computed<boolean>(() => !jokesStore.jokesLoaded);
+const jokesLoaded = computed<boolean>(() => jokesStore.jokesLoaded);
 
 const updateFilter = (toggleArray: TJokeCategoryToggles) => {
 	filterCategories.value = Object.keys(toggleArray).filter(cat => toggleArray[cat]);
 };
+
+// debounce adds a minimum spin time, to avoid a flash
+const debouncedLoading = debounce(() => isLoading.value = !jokesStore.jokesLoaded, 500);
+watch(jokesLoaded, debouncedLoading);
 
 const init = () => {
 	jokesStore.init().then();
@@ -58,7 +63,7 @@ init();
     <template v-if="isLoading">
       Loading...
     </template>
-    <!-- TODO: error message -->
+
     <JokeCategories
       v-else
       @toggle-category="updateFilter"

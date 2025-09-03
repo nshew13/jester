@@ -52,7 +52,7 @@ const onClickJoke = () => {
 		// no need for timeouts if not animating
 	  const words = props.joke.punchline.split(RE_WORD_BOUNDARY);
 	  words.forEach((word, index) => {
-		  setTimeout(() => jokePunchlineWords.value.push(word), 50 * index);
+		  setTimeout(() => jokePunchlineWords.value.push(word), 25 * index);
     });
   }
 };
@@ -127,7 +127,7 @@ const onClickJoke = () => {
 
 .word-enter-active,
 .word-leave-active {
-    transition: opacity 750ms ease;
+    transition: opacity 500ms ease;
 }
 
 .word-enter-from,
