@@ -1,10 +1,19 @@
 <script setup lang="ts">
 import {ref} from 'vue';
+import {useBreakpoints} from '@vueuse/core';
 import {SORT_DIRECTION, type TSortDirection} from '@/types/Sort.ts';
 
 defineProps<{
 	label: string;
 }>();
+
+
+const breakpoints = useBreakpoints({
+	tablet: 720, // this should match $breakpoint-small
+});
+
+const isSmallGlass = breakpoints.smaller(() => 'tablet')
+
 
 const emit = defineEmits<{
 	'sort': [direction: TSortDirection],
@@ -30,6 +39,7 @@ const cycleDirection = () => {
   class="sort-control cursor-pointer"
   :class="{'inactive': sortDirection === SORT_DIRECTION.NONE}"
   no-caps
+  :dense="isSmallGlass"
   @click.stop="cycleDirection"
 >
   {{ label }}
@@ -43,8 +53,8 @@ const cycleDirection = () => {
 
 <style scoped>
 .sort-control {
-    min-width: 100px;
-    margin: 0 1em;
+    min-width: 75px;
+    margin: 0 10px;
 
     &:not(.inactive) {
         font-weight: bold;

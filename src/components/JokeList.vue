@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref, watch} from 'vue';
+import {useBreakpoints} from '@vueuse/core';
 import JokeSingle from '@/components/JokeSingle.vue';
 import SortControl from '@/components/SortControl.vue';
 import {SORT_DIRECTION, type TSortDirection} from '@/types/Sort.ts';
@@ -9,6 +10,13 @@ import type {QTableProps} from 'quasar';
 const props = defineProps<{
 	jokes: IJoke[]
 }>();
+
+const breakpoints = useBreakpoints({
+	tablet: 720, // this should match $breakpoint-small
+});
+
+const isSmallGlass = breakpoints.smaller(() => 'tablet')
+
 
 const columnsDef: QTableProps['columns'] = [
 	{
@@ -88,8 +96,10 @@ watch([() => props.jokes, searchString, sortDirectionSetup], () => {
 >
   <!-- sort controls -->
   <template v-slot:top-left>
-    Sort by:
-    <SortControl label="Setup" @sort="(sortDirection: TSortDirection) => sortDirectionSetup = sortDirection" />
+    <div>
+      Sort by:<br v-if="isSmallGlass" />
+      <SortControl label="Setup" @sort="(sortDirection: TSortDirection) => sortDirectionSetup = sortDirection" />
+    </div>
   </template>
 
   <!-- search field -->

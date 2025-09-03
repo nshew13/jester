@@ -46,6 +46,7 @@ init();
     :label="cat.toLocaleUpperCase()"
     :model-value="categoryToggles[cat]"
     :name="cat"
+    class="category-toggle"
     @update:model-value="() => toggleCategory(cat)"
   />
 
@@ -54,15 +55,27 @@ init();
     label="LIKED ONLY"
     :model-value="likedOnlyToggle"
     name="likedOnlyToggle"
+    class="category-toggle"
     @update:model-value="toggleLikedOnly"
   />
 </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .joke-categories-container {
-    display: flex;
-    justify-content: center;
-    gap: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+@media screen and (width < $breakpoint-small) {
+  .joke-categories-container {
+	  gap: 5px;
+  }
+
+  .category-toggle {
+	  font-size: 10pt;
+  }
 }
 </style>

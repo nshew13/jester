@@ -22,24 +22,25 @@ pnpm dev
 pnpm build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### Run Unit Tests with Vitest
 
 ```sh
-pnpm test:unit
+pnpm test
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint with ESLint
 
 ```sh
 pnpm lint
 ```
 
-https://openclipart.org/detail/214483/colored-jester-hat-by-dear_theophilus-214483
-
+## Image attribution
+- Jester hat from [openclipart.org](https://openclipart.org/detail/214483/colored-jester-hat-by-dear_theophilus-214483)
+- Bomb from [pixabay.com](https://pixabay.com/de/illustrations/bombe-explodieren-detonieren-1602109/)
 
 ## Implementation highlights
-
  - Native `fetch` calls
+ - Responsive (breakpoint at 720px)
  - Quasar component library (Vite plugin)
  - Table data
    - Search and sort by setup

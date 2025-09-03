@@ -3,6 +3,7 @@ import {computed, ref, watch} from 'vue';
 import {debounce} from 'quasar';
 import {useJokesStore} from '@/stores/JokesStore.ts';
 import {usePreferencesStore} from '@/stores/PreferencesStore.ts';
+import BrandLogo from '@/components/BrandLogo.vue';
 import ConfigMenu from '@/components/ConfigMenu.vue';
 import JokeList from '@/components/JokeList.vue';
 import JokeCategories from '@/components/JokeCategories.vue';
@@ -55,10 +56,7 @@ init();
   <ConfigMenu />
 
   <header class="app-header" :class="{loading: isLoading}">
-    <div class="brand">
-      <img alt="Jester logo" class="logo" src="/jester-logo-sq.png" />
-      <span class="font-diner-swanky-regular">Jester</span>
-    </div>
+    <BrandLogo :animate="isLoading" />
 
     <template v-if="isLoading">
       Loading...
@@ -80,6 +78,7 @@ init();
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
 }
 
 .app-header {
@@ -93,31 +92,6 @@ init();
         flex: 1 0 0;
         align-items: center;
         justify-content: center;
-
-        .logo {
-            display: block;
-            animation: rotate360 1s linear infinite;
-        }
     }
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 28pt;
-}
-
-.logo {
-    display: block;
-    margin: 0 1rem 0 0;
-    width: 200px;
-    height: auto;
-}
-
-@keyframes rotate360 {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
 }
 </style>
