@@ -96,6 +96,7 @@ const jokesToDisplay = computed<IJoke[]>(() => {
     <q-input
       outlined
       rounded
+      clearable
       dense
       debounce="300"
       v-model="searchString"
