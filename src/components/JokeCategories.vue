@@ -42,7 +42,8 @@ init();
 </div>
 <div class="joke-categories-container">
   <q-toggle
-    v-for="(toggle, cat) in categoryToggles"
+    v-for="(_, cat) in categoryToggles"
+    :key="cat"
     :label="cat.toLocaleUpperCase()"
     :model-value="categoryToggles[cat]"
     :name="cat"

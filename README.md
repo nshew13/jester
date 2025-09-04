@@ -55,7 +55,7 @@ pnpm lint
  - Simple unit testing
    - Coverage report is available with `--coverage`
  - Git `pre-push` hook (via Husky)
-   - Prevents pushing with failing test(s) or packages failing security audit
+   - Prevents pushing with failing lint or test(s), or packages failing security audit
 
 ## Implementation notes
 
@@ -88,3 +88,8 @@ Paging was implemented before adding Quasar, and is still present, just commente
 - `App` is starting to get too big and needs to delegate to subcomponents.
 - If we get many more joke types, we'll need to put their filter toggles in a drop-down.
   The current design avoids the extra click(s) involved in that UI.
+
+
+## Known issues
+- [Bug: (Windows) Parsing error: inferred tsconfigRootDir should be a resolved absolute path, but received: "C:/Users/29422/Desktop/vue-project". [#11546]](https://github.com/typescript-eslint/typescript-eslint/issues/11530)
+  - Fixed with pnpm override `"typescript-eslint": "^8.42.0"` until packages catch up. 
