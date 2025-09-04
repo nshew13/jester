@@ -82,3 +82,9 @@ that could be paged is the ID option, which seems inefficient. The current imple
 pagination over the whole dataset.
 
 Paging was implemented before adding Quasar, and is still present, just commented-out.
+
+
+## Possible roadmap
+- `App` is starting to get too big and needs to delegate to subcomponents.
+- If we get many more joke types, we'll need to put their filter toggles in a drop-down.
+  The current design avoids the extra click(s) involved in that UI.

@@ -81,9 +81,12 @@ export const useJokesStore = defineStore('jokes', () => {
 		 *
 		 * Use the index of the sorted types to sort the jokes, themselves.
 		 * There's no need to sort if we have only one type.
+		 *
+		 * It should be OK to sort in place here (rather than use toSorted),
+		 * since dataJokes was just created above.
 		 */
 		if (jokeTypes.value.length > 1) {
-			jokes.value = dataJokes.toSorted((a: IJoke, b: IJoke) => {
+			dataJokes.sort((a: IJoke, b: IJoke) => {
 				const sortValueA = jokeTypes.value.indexOf(a.type);
 				const sortValueB = jokeTypes.value.indexOf(b.type);
 
@@ -98,6 +101,8 @@ export const useJokesStore = defineStore('jokes', () => {
 				return 0;
 			});
 		}
+
+		jokes.value = dataJokes;
 	}
 
 	const loadTypes = async (): Promise<void> => {

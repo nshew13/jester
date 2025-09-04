@@ -12,25 +12,44 @@ import type {IJoke, TJokeCategoryToggles} from '@/types/Joke.ts';
 const jokesStore = useJokesStore();
 const preferencesStore = usePreferencesStore();
 
+/**
+ * array of joke types to display or hide
+ */
 const filterCategories = ref<Array<IJoke['type']>>([]);
+/**
+ * toggle to show only liked jokes
+ */
 const filterLiked = ref<boolean>(false);
 const isLoading = ref<boolean>(true);
 
 const filteredList = computed<IJoke[]>(() => {
-	// shortcut
-	const hideDisliked = preferencesStore.preferences.optHideDisliked;
+	// short-circuit if states not ready
+	if (jokesStore.jokes.length === 0 || filterCategories.value.length === 0) {
+		return [];
+  }
 
 	return jokesStore.jokes.filter(j => {
-		const filterCategory = filterCategories.value.includes(j.type);
+	  /*
+     * If the category filter fails, we can stop there. Dis/likes
+     * won't make a difference.
+	   */
+		if (!filterCategories.value.includes(j.type)) {
+			return false;
+    }
 
+	  // If we want to display only liked jokes, check this joke's status.
 		if (filterLiked.value) {
-			const filterLikedOnly = filterLiked.value && preferencesStore.preferences.likedJokeIDs.has(j.id);
-			return filterCategory && filterLikedOnly;
+			return preferencesStore.preferences.likedJokeIDs.has(j.id);
 		}
 
-		const filterHideDisliked = hideDisliked && preferencesStore.preferences.dislikedJokeIDs.has(j.id);
-
-		return filterCategory && !filterHideDisliked;
+	  /*
+     * A joke can't be both liked and disliked. If we made it this far,
+     * see if the user opted to hide disliked jokes.
+	   */
+	  return !(
+		  preferencesStore.preferences.optHideDisliked &&
+		  preferencesStore.preferences.dislikedJokeIDs.has(j.id)
+	  );
 	});
 });
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue';
+import {computed, ref} from 'vue';
 import {useBreakpoints} from '@vueuse/core';
 import JokeSingle from '@/components/JokeSingle.vue';
 import SortControl from '@/components/SortControl.vue';
@@ -15,7 +15,7 @@ const breakpoints = useBreakpoints({
 	tablet: 720, // this should match $breakpoint-small
 });
 
-const isSmallGlass = breakpoints.smaller(() => 'tablet')
+const isSmallGlass = breakpoints.smaller(() => 'tablet');
 
 
 const columnsDef: QTableProps['columns'] = [
@@ -41,46 +41,35 @@ const columnsDef: QTableProps['columns'] = [
 	},
 ];
 
-/*
- * Initializing this to the prop should be fine. We can
- * assume the search input is empty and that the default
- * sort of NONE won't have made a difference.
- */
-const jokesToDisplay = ref<IJoke[]>(props.jokes);
 const searchString = ref<string>('');
 const sortDirectionSetup = ref<TSortDirection>(SORT_DIRECTION.NONE);
 
+const jokesToDisplay = computed<IJoke[]>(() => {
+	let results = props.jokes.slice(); // assign as a copy
 
-const searchByString = (jokesToSort: IJoke[]): IJoke[] => {
-  const searchStringLC = searchString.value.toLocaleLowerCase();
-  return jokesToSort.filter(j => j?.searchString.includes(searchStringLC) ?? false);
-};
-
-const sortByJokeSetup = (jokesToSort: IJoke[]): IJoke[] => {
-	const sortLT = sortDirectionSetup.value === SORT_DIRECTION.ASC ? -1 : 1;
-	const sortGT = sortDirectionSetup.value === SORT_DIRECTION.ASC ? 1 : -1;
-
-	if (sortDirectionSetup.value === SORT_DIRECTION.NONE) {
-	  return jokesToSort;
+	if (searchString.value) {
+		const searchTerm = searchString.value.toLocaleLowerCase();
+		results = results.filter(j => j.searchString.includes(searchTerm));
 	}
 
-	return jokesToSort.toSorted((a: IJoke, b: IJoke) => {
-		if (a?.searchString < b?.searchString) {
-			return sortLT;
-		}
-		if (a?.searchString > b?.searchString) {
-			return sortGT;
-		}
+	if (sortDirectionSetup.value !== SORT_DIRECTION.NONE) {
+		const sortLT = sortDirectionSetup.value === SORT_DIRECTION.ASC ? -1 : 1;
+		const sortGT = sortDirectionSetup.value === SORT_DIRECTION.ASC ? 1 : -1;
 
-		return 0;
-	});
-};
+		return results.sort((a: IJoke, b: IJoke) => {
+			if (a?.searchString < b?.searchString) {
+				return sortLT;
+			}
+			if (a?.searchString > b?.searchString) {
+				return sortGT;
+			}
 
+			return 0;
+		});
+	}
 
-watch([() => props.jokes, searchString, sortDirectionSetup], () => {
-	const searchResults = searchByString(props.jokes);
-	jokesToDisplay.value = sortByJokeSetup(searchResults);
-}, {immediate: true});
+	return results;
+});
 </script>
 
 <template>
