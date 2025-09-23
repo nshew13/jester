@@ -70,6 +70,27 @@ const jokesToDisplay = computed<IJoke[]>(() => {
 
 	return results;
 });
+
+/*
+ * There's an issue in the JokeList > [JokeSingle] setup, probably caused by
+ * filtering records outside QTable. As a result, if we reveal, for example,
+ * the punchline of the fourth joke, then change the filters so that a
+ * different joke is now in the fourth position, the new fourth will still
+ * show the revealed punchline of the original fourth. In other words, the
+ * fourth JokeSingle component maintains its internal state despite changes
+ * to its `joke` prop.
+ *
+ * To fix this, we can add a key to force the QTable to re-render. The length
+ * of the jokes list, alone, is unlikely to be sufficiently unique (e.g., if
+ * two categories have the same number of jokes). While still not bullet-proof,
+ * a concatenation of the length with the first joke's setup should be sufficient
+ * for this exercise.
+ *
+ * As a consequence, all JokeSingles will lose their state whenever this key
+ * is updated. The same happens if each JokeSingle is, instead, configured to
+ * watch its props for changes.
+ */
+const tableKey = computed<string>(() => `${jokesToDisplay.value.length}${jokesToDisplay.value?.[0]?.searchString ?? 'empty'}`);
 </script>
 
 <template>
@@ -81,6 +102,7 @@ const jokesToDisplay = computed<IJoke[]>(() => {
   row-key="id"
   :rows-per-page-options="[10, 20, 50, 100]"
   :rows="jokesToDisplay"
+  :key="tableKey"
   wrap-cells
 >
   <!-- sort controls -->

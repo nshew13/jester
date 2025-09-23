@@ -22,7 +22,7 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 				// TODO: Are we losing any advantages of Sets (including simplicity) by constantly converting to/from Arrays?
 				serializer: {
 					read: (state: string) => {
-						const obj = JSON.parse(state)
+						const obj = JSON.parse(state);
 
 						let dislikedJokeIDs: Set<IJoke['id']>;
 						if (typeof obj.dislikedJokeIDs[Symbol.iterator] === 'function') {
@@ -42,15 +42,15 @@ export const usePreferencesStore = defineStore(STORE_NAME, () => {
 							...obj,
 							dislikedJokeIDs,
 							likedJokeIDs,
-						}
+						};
 					},
 					write: (state: IPreference) => JSON.stringify({
 						...state,
 						dislikedJokeIDs: [...state.dislikedJokeIDs],
 						likedJokeIDs: [...state.likedJokeIDs],
 					}),
-				}
-			}
+				},
+			},
 		),
 	);
 

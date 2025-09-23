@@ -52,8 +52,16 @@ const onClickJoke = () => {
 		// no need for timeouts if not animating
 	  const words = props.joke.punchline.split(RE_WORD_BOUNDARY);
 	  words.forEach((word, index) => {
-		  setTimeout(() => jokePunchlineWords.value.push(word), 25 * index);
-    });
+		  /*
+       * To prevent re-appending the punchline on subsequent
+       * clicks, we must re-initialize the list each time.
+       */
+		  jokePunchlineWords.value = [];
+
+		  setTimeout(() => {
+			  jokePunchlineWords.value.push(word);
+		  }, 25 * index);
+	  });
   }
 };
 </script>
