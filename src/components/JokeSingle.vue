@@ -110,7 +110,7 @@ const onClickJoke = () => {
 </q-card>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .joke-single {
     display: flex;
     flex-direction: column;
@@ -123,6 +123,12 @@ const onClickJoke = () => {
     &.gold { background: var(--jester-color-bg-gold); }
     &.green { background: var(--jester-color-bg-green); }
     &.red { background: var(--jester-color-bg-red); }
+}
+
+@media screen and (width < $breakpoint-small) {
+    .joke-single {
+      width: 100%;
+    }
 }
 
 .joke-single-content {

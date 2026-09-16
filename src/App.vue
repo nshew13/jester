@@ -104,7 +104,6 @@ init();
     display: flex;
     flex-direction: column;
 
-    padding-bottom: 1rem;
     box-shadow: rgba(0 0 0 / 0.2) 0 2px 8px 0;
 
     &.loading {

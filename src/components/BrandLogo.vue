@@ -17,7 +17,7 @@ defineProps<{
     align-items: center;
     justify-content: center;
 
-    margin: 15px 15px 20px;
+    margin: 15px;
     font-size: 28pt;
 }
 

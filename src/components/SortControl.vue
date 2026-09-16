@@ -43,12 +43,12 @@ const cycleDirection = () => {
 </q-btn>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .sort-control {
     min-width: 75px;
     margin: 0 10px;
 
-    @media screen and (width < 720px) {
+    @media screen and (width < $breakpoint-small) {
       margin: 0;
     }
 
