@@ -109,7 +109,7 @@ const tableKey = computed<string>(() => `${jokesToDisplay.value.length}${jokesTo
   <template v-slot:top-left>
     <div>
       Sort by:<br v-if="isSmallGlass" />
-      <SortControl label="Setup" @sort="(sortDirection: TSortDirection) => sortDirectionSetup = sortDirection" />
+      <SortControl label="Setup" v-model="sortDirectionSetup" />
     </div>
   </template>
 
