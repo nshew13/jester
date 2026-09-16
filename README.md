@@ -99,3 +99,7 @@ Paging was implemented before adding Quasar, and is still present in `JokesStore
 - [**typescript-eslint #11546:**](https://github.com/typescript-eslint/typescript-eslint/issues/11530)
   Bug: (Windows) Parsing error: inferred tsconfigRootDir should be a resolved absolute path, but received: "C:/Users/29422/Desktop/vue-project".
   - Fixed with pnpm override `"typescript-eslint": "^8.42.0"` until packages catch up. 
+- [**vue-tsc #6124:**](https://github.com/vuejs/language-tools/issues/6124)
+  Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './lib/tsc' is not defined by "exports" in .../vue-tsc/3.3.8/...
+  - Fixed by reverting to TypeScript 6 until packages catch up.
+  - Also had to downgrade Quasar AE to v2.
