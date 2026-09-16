@@ -17,42 +17,37 @@
     "prepare": "husky || true"
   },
   "dependencies": {
-    "@quasar/extras": "^1.17.0",
-    "@vueuse/core": "^13.8.0",
-    "pinia": "^3.0.3",
-    "quasar": "^2.18.2",
-    "vue": "^3.5.18"
+    "@quasar/extras": "^2.1.0",
+    "@vueuse/core": "^14.4.0",
+    "pinia": "^4.0.3",
+    "quasar": "^2.32.3",
+    "vue": "^3.5.42"
   },
   "devDependencies": {
-    "@pinia/testing": "^1.0.2",
-    "@quasar/quasar-app-extension-testing-unit-vitest": "^1.2.3",
-    "@quasar/vite-plugin": "^1.10.0",
-    "@testing-library/dom": "^10.4.1",
+    "@pinia/testing": "^2.0.1",
+    "@quasar/quasar-app-extension-testing-unit-vitest": "^3.0.0",
+    "@quasar/vite-plugin": "^2.0.2",
+    "@testing-library/dom": "^10.4.2",
     "@testing-library/vue": "^8.1.0",
-    "@tsconfig/node22": "^22.0.2",
-    "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.16.5",
-    "@vitejs/plugin-vue": "^6.0.1",
-    "@vitest/coverage-istanbul": "^3.2.4",
-    "@vitest/eslint-plugin": "^1.3.4",
-    "@vue/eslint-config-typescript": "^14.6.0",
-    "@vue/tsconfig": "^0.7.0",
-    "eslint": "^9.31.0",
-    "eslint-plugin-vue": "~10.3.0",
+    "@tsconfig/node22": "^22.0.6",
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^22.20.2",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vitest/coverage-istanbul": "^5.0.1",
+    "@vitest/eslint-plugin": "^1.6.27",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "@vue/tsconfig": "^0.9.1",
+    "eslint": "^10.10.0",
+    "eslint-plugin-vue": "~10.11.0",
     "husky": "^9.1.7",
-    "jiti": "^2.4.2",
-    "jsdom": "^26.1.0",
-    "npm-run-all2": "^8.0.4",
-    "sass-embedded": "^1.91.0",
-    "typescript": "~5.8.0",
-    "vite": "^7.1.7",
-    "vite-plugin-vue-devtools": "^8.0.0",
-    "vitest": "^3.2.4",
-    "vue-tsc": "^3.0.4"
-  },
-  "pnpm": {
-    "overrides": {
-      "typescript-eslint": "^8.42.0"
-    }
+    "jiti": "^2.7.0",
+    "jsdom": "^30.0.1",
+    "npm-run-all2": "^9.0.3",
+    "sass-embedded": "^1.104.1",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.0",
+    "vite-plugin-vue-devtools": "^8.2.1",
+    "vitest": "^5.0.1",
+    "vue-tsc": "^3.3.11"
   }
 }
